@@ -1,4 +1,5 @@
 require 'volksbanker/volksbank_file_reader'
+require 'volksbanker/amex_line_item'
 
 module Volksbanker
 

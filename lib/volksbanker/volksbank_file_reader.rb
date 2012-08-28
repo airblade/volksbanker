@@ -16,7 +16,6 @@
 # Footer (opening and closing balances)
 
 require 'volksbanker/volksbank_line_item'
-require 'volksbanker/amex_line_item'
 
 module Volksbanker
 
