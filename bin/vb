@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby-local-exec
+
+lib_dir = File.join File.dirname(__FILE__), '..', 'lib'
+$LOAD_PATH.unshift lib_dir
+
+require 'volksbanker'
+
+Volksbanker::Cli.run ARGV.first
+
