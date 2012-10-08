@@ -44,16 +44,19 @@ module Volksbanker
     private
 
     def clean_line_breaks(str)
-      # Format uses \r\n for line breaks between inter-line breaks and \n for intra-line breaks.
+      # Format uses CRLF (\r\n) for line breaks and LF (\n) for intra-line breaks (whatever
+      # they are).
       # There must be a neat Ruby way to do this...
       remove_inter_line_breaks remove_intra_line_breaks(str)
     end
 
     def remove_intra_line_breaks(str)
+      # Replace bare new lines (\n not preceded by \r) with space.
       str.gsub /([^\r])\n/, '\1 '
     end
 
     def remove_inter_line_breaks(str)
+      # Replace CRLF with LF.
       str.gsub "\r\n", "\n"
     end
   end
