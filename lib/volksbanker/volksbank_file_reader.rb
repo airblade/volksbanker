@@ -1,6 +1,6 @@
 # Volksbank format line by line:
 #
-# Lines 1-13: header
+# Header information including blank lines.
 # Subsequent non-blank lines: semi-colon separated values
 #   posting date
 #   value date
@@ -30,14 +30,19 @@ module Volksbanker
       data = File.open(@file,'r:iso-8859-1:utf-8') { |f| f.read }
       data = clean_line_breaks data
 
-      line_number = 0
+      header = true
       data.each_line do |line|
-        line_number += 1           # 1-based line numbering
-        next if line_number <= 13  # skip header
-        line.chomp!
-        break if line.empty?       # skip footer
+        # skip header
+        if line =~ /^"Buchungstag";"Valuta";/  # final line of header
+          header = false
+          next
+        end
+        next if header
 
-        yield VolksbankLineItem.new_from_csv line
+        line.chomp!
+        break if line.empty?  # stop before footer
+
+        yield VolksbankLineItem.new_from_csv line rescue $stderr.puts "Problem with #{line}: #{$!}"
       end
     end
 
