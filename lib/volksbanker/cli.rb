@@ -11,9 +11,17 @@ module Volksbanker
           $stderr.puts "Skipping non-EUR currency line item: #{vli.inspect}"
           next
         end
-        ali = AmexLineItem.new vli.posting_date, vli.value, "#{vli.description} (#{vli.recipient_or_payer})"
+        ali = AmexLineItem.new vli.posting_date, vli.value, description_for(vli)
         CSV { |out| out << [ali.date, ali.amount, ali.description] }
       end
+    end
+
+    private
+
+    def self.description_for(volksbank_line_item)
+      desc = volksbank_line_item.description
+      desc += " (#{volksbank_line_item.recipient_or_payer})" unless volksbank_line_item.recipient_or_payer.nil?
+      desc
     end
   end
 

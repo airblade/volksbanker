@@ -3,6 +3,7 @@
 
 ## 1.0.2 (8 October 2012)
 
+* Only show recipient/payer if present.
 * More robust handling of line breaks.
 * Handle variable length headers.
 
