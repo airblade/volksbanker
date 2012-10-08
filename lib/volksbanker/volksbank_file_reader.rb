@@ -11,7 +11,7 @@
 #   description
 #   currency
 #   amount
-#   credit (H) /debit (S)
+#   credit (H) / debit (S)
 # Blank line
 # Footer (opening and closing balances)
 
@@ -52,15 +52,18 @@ module Volksbanker
       # Format uses CRLF (\r\n) for line breaks and LF (\n) for intra-line breaks (whatever
       # they are).
       # There must be a neat Ruby way to do this...
-      remove_inter_line_breaks remove_intra_line_breaks(str)
+      unixify_line_breaks remove_intra_line_breaks(str)
     end
 
     def remove_intra_line_breaks(str)
-      # Replace bare new lines (\n not preceded by \r) with space.
-      str.gsub /([^\r])\n/, '\1 '
+      # Replace LF, but not CRLF, with space.
+      str.
+        gsub(/^\n/, ' ').          # a line beginning with a LF character
+        gsub(/([^\r])\n/, '\1 ').  # a non-CR character followed by a LF character
+        squeeze(' ')
     end
 
-    def remove_inter_line_breaks(str)
+    def unixify_line_breaks(str)
       # Replace CRLF with LF.
       str.gsub "\r\n", "\n"
     end

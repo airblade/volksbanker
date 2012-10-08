@@ -22,4 +22,12 @@ class CliTest < MiniTest::Unit::TestCase
     assert_match /Skipping/, err
   end
 
+  def test_handles_line_feed_shenanigans
+    out, err = capture_io do
+      Volksbanker::Cli.run fixture('newlines.csv')
+    end
+
+    assert_equal '', err
+  end
+
 end
