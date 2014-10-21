@@ -13,15 +13,6 @@ class CliTest < MiniTest::Unit::TestCase
     end
   end
 
-  def test_skips_non_euro_line_items
-    out, err = capture_io do
-      Volksbanker::Cli.run fixture('transactions-with-non-euro.csv')
-    end
-
-    refute_match %r{30/07/2012}m, out
-    assert_match /Skipping/, err
-  end
-
   def test_handles_line_feed_shenanigans
     out, err = capture_io do
       Volksbanker::Cli.run fixture('newlines.csv')
