@@ -8,8 +8,15 @@ module Volksbanker
       reader = VolksbankFileReader.new volksbank_file
       reader.each_line_item do |vli|
         ali = AmexLineItem.new vli.posting_date, vli.value, description_for(vli)
-        CSV { |out| out << [ali.date, ali.amount, ali.description] }
+        case ali.description
+        when 'Anfangssaldo'; @opening_balance = pretty_amount(ali.amount, vli.currency)
+        when 'Endsaldo';     @closing_balance = pretty_amount(ali.amount, vli.currency)
+        else
+          CSV { |out| out << [ali.date, ali.amount, ali.description] }
+        end
       end
+      $stderr.puts "opening balance: #{@opening_balance}"
+      $stderr.puts "closing balance: #{@closing_balance}"
     end
 
     private
@@ -18,6 +25,10 @@ module Volksbanker
       desc = volksbank_line_item.description
       desc += " (#{volksbank_line_item.recipient_or_payer})" unless volksbank_line_item.recipient_or_payer.nil?
       desc
+    end
+
+    def self.pretty_amount(amount, currency)
+      "#{'%.2f' % amount} #{currency}"
     end
   end
 

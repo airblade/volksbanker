@@ -16,8 +16,15 @@ class VolksbankLineItem
     @recipient_or_payer = recipient_or_payer
     @account_number     = account_number
     @sort_code          = sort_code
+
     @description        = description
     @currency           = currency
+    # The opening and closing balance lines switch the currency and description fields.
+    if %w[ Anfangssaldo Endsaldo ].include? currency
+      @description = currency
+      @currency = description
+    end
+
     amt = parse_number amount
     @value = credit?(credit_or_debit) ? amt : (amt * -1)
   end
@@ -29,7 +36,7 @@ class VolksbankLineItem
   private
 
   def parse_date(str)
-    Date.strptime str, DATE_FORMAT
+    Date.strptime str, DATE_FORMAT if str
   end
 
   def parse_number(str)

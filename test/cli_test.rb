@@ -5,8 +5,8 @@ require 'volksbanker/cli'
 class CliTest < MiniTest::Unit::TestCase
 
   def test_happy_path
-    expected_stdout = read_fixture 'result.csv'
-    expected_stderr = ''
+    expected_stdout = read_fixture 'result.stdout.csv'
+    expected_stderr = read_fixture 'result.stderr.csv'
 
     assert_output expected_stdout, expected_stderr do
       Volksbanker::Cli.run fixture('transactions.csv')
@@ -18,7 +18,7 @@ class CliTest < MiniTest::Unit::TestCase
       Volksbanker::Cli.run fixture('newlines.csv')
     end
 
-    assert_equal '', err
+    assert_equal read_fixture('newlines.stderr.csv'), err
   end
 
 end

@@ -40,9 +40,10 @@ module Volksbanker
         next if header
 
         line.chomp!
-        break if line.empty?  # stop before footer
 
-        yield VolksbankLineItem.new_from_csv line rescue $stderr.puts "Problem with #{line}: #{$!}"
+        unless line.empty?
+          yield VolksbankLineItem.new_from_csv line rescue $stderr.puts "Problem with #{line}: #{$!}"
+        end
       end
     end
 
