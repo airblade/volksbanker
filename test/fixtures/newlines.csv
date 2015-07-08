@@ -10,10 +10,10 @@
 "Betrag in EUR:";;"von:";" ";"bis:";" "
 "Sortiert nach:";"Buchungstag";"absteigend"
 
-"Buchungstag";"Valuta";"Auftraggeber/Zahlungsempfänger";"Empfänger/Zahlungspflichtiger";"Konto-Nr.";"BLZ";"Vorgang/Verwendungszweck";"Währung";"Umsatz";" "
-"02.10.2012";"30.09.2012";;;;;"Abschluss
+"Buchungstag";"Valuta";"Auftraggeber/Zahlungsempfänger";"Empfänger/Zahlungspflichtiger";"Konto-Nr.";"IBAN";"BLZ";"BIC";"Vorgang/Verwendungszweck";"Kundenreferenz";"Währung";"Umsatz";" "
+"02.10.2012";"30.09.2012";;;;;;;"Abschluss
 
-ABSCHLUSS PER 30.09.2012";"EUR";"10,27";"S"
+ABSCHLUSS PER 30.09.2012";;"EUR";"10,27";"S"
 
 "01.10.2012";;;;;;"EUR";"Anfangssaldo";"1.234,56";"H"
 "05.10.2012";;;;;;"EUR";"Endsaldo";"3.456,67";"H"

@@ -1,39 +1,37 @@
-# Volksbank format line by line:
-#
-# Header information including blank lines.
-# Subsequent non-blank lines: semi-colon separated values
-#   posting date
-#   value date
-#   payer/payee
-#   recipient/payer
-#   account no.
-#   sortcode
-#   description
-#   currency
-#   amount
-#   credit (H) / debit (S)
-# Blank line
-# Footer (opening and closing balances)
-
-require 'volksbanker/volksbank_line_item'
+require 'volksbanker/statement'
+require 'volksbanker/balance'
+require 'volksbanker/transaction'
 
 module Volksbanker
 
   class VolksbankFileReader
     def initialize(file)
       @file = file
+      read
     end
 
-    # Yields each transaction line item to the block.
-    # I.e. skips the header and footer information.
-    def each_line_item(&block)
+    def statement
+      Statement.new @line_items, @opening_balance, @closing_balance
+    end
+
+    private
+
+    def read
+      # Layout of file:
+      #   Header information including blank lines.
+      #   Subsequent non-blank lines: transactions.
+      #   Blank line
+      #   Opening balance
+      #   Closing balance
+
+      @line_items = []
+      header = true
+
       data = File.open(@file,'r:iso-8859-1:utf-8') { |f| f.read }
       data = clean_line_breaks data
-
-      header = true
       data.each_line do |line|
         # skip header
-        if line =~ /^"Buchungstag";"Valuta";/  # final line of header
+        if last_line_of_header? line
           header = false
           next
         end
@@ -41,13 +39,29 @@ module Volksbanker
 
         line.chomp!
 
-        unless line.empty?
-          yield VolksbankLineItem.new_from_csv line rescue $stderr.puts "Problem with #{line}: #{$!}"
+        if opening_balance? line
+          @opening_balance = Balance.parse line
+        elsif closing_balance? line
+          @closing_balance = Balance.parse line
+        else
+          unless line.empty?
+            @line_items << Transaction.parse(line) rescue $stderr.puts "Problem with #{line}: #{$!}"
+          end
         end
       end
     end
 
-    private
+    def last_line_of_header?(str)
+      str =~ /^"Buchungstag";"Valuta";/
+    end
+
+    def opening_balance?(str)
+      str =~ /;"Anfangssaldo";/
+    end
+
+    def closing_balance?(str)
+      str =~ /;"Endsaldo";/
+    end
 
     def clean_line_breaks(str)
       # Format uses CRLF (\r\n) for line breaks and LF (\n) for intra-line breaks (whatever
