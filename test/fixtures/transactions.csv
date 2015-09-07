@@ -28,5 +28,5 @@ INVOICE 7002";"ref";"EUR";"136,00";"H"
 "17.07.2012";"17.07.2012";"Foo GmbH";"Blah Inc GmbH";"1234567890";"this is an iban";"12345678";"bic";"Vergütung
 INVOICE 2264";"ref";"EUR";"170,00";"H"
 
-"17.07.2012";;;;;;"EUR";"Anfangssaldo";"0,00";"H"
-"08.08.2012";;;;;;"EUR";"Endsaldo";"2.729,50";"H"
+"17.07.2012";;;;;;;;;"Anfangssaldo";"EUR";"0,00";"H"
+"08.08.2012";;;;;;;;;"Endsaldo";"EUR";"2.729,50";"H"
