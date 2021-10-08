@@ -11,12 +11,11 @@ Gem::Specification.new do |s|
   s.summary     = "Prepares Volksbank's electronic statements for upload to Freeagent."
   s.description = s.summary
 
-  s.rubyforge_project = "volksbanker"
-
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_development_dependency 'rake', '~> 0.9.2'
+  s.add_development_dependency 'rake', '>= 12.3.3'
+  s.add_development_dependency 'minitest', '>= 5.0'
 end
