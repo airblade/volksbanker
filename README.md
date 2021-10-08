@@ -2,6 +2,8 @@
 
 Prepares Volksbank's electronic statements for upload to Freeagent.
 
+Compared with the [AWK version](https://github.com/airblade/volksbanker-awk) this is more object-oriented.
+
 
 ## Usage
 
